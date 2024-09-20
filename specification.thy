@@ -37,7 +37,9 @@ proof (induct L1)
   show ?case
   proof -
     have "size (cat [] L2) = size L2" by simp
-    have "size [] + size L2 = size L2" by simp
+    also have "size [] = 0" by (simp only: size_base)
+    also have "0 + size L2 = size L2" by simp
+    also have "size [] + size L2 = size L2" by simp
     thus ?thesis by simp
   qed
 next
