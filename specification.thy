@@ -36,7 +36,8 @@ proof (induct L1)
   case Nil
   show ?case
   proof -
-    have "size (cat [] L2) = size L2" by simp
+    have "cat [] L2 = L2" by (simp only: cat_base)
+    also have "size (cat [] L2) = size L2" by simp
     also have "size [] = 0" by (simp only: size_base)
     also have "0 + size L2 = size L2" by simp
     also have "size [] + size L2 = size L2" by simp
@@ -47,6 +48,8 @@ next
   assume induction_hypothesis: "size (cat t L2) = size t + size L2"
   show ?case
   proof -
+    have "cat (h # t) L2 = h # (cat t L2)" by (simp only: cat_induction)
+    
     have "size (cat (h # t) L2) = 1 + size (cat t L2)" by simp
     also have "... = 1 + (size t + size L2)" using induction_hypothesis by simp
     also have "... = size (h # t) + size L2" by simp
