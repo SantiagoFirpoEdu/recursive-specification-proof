@@ -54,7 +54,7 @@ next
   have "numnodos (Node L x R) = 1 + numnodos L + numnodos R" by simp
   moreover have "tamanho (conteudo (Node L x R)) = 1 + tamanho (cat (conteudo L) (conteudo R))" by simp
   moreover have "tamanho (cat (conteudo L) (conteudo R)) = tamanho (conteudo L) + tamanho (conteudo R)"
-    using cat_tamanho by simp
+    by (simp add: cat_tamanho)
   ultimately show ?case using IH_L IH_R by simp
 qed
 
