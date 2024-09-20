@@ -30,32 +30,53 @@ primrec espelho :: "'a tree ⇒ 'a tree" where
   "espelho Empty = Empty" |
   "espelho (Node L x R) = Node (espelho R) x (espelho L)"
 
-(* lemma da a prova 1 para ser reusado na prova 2 (não sei se podemos fazer assim. A confirmar) *)
+(* lemma da a prova 1 para ser reusado na prova 2 *)
 lemma cat_tamanho: "tamanho (cat L1 L2) = tamanho L1 + tamanho L2"
 proof (induct L1)
   case Nil
-  then show ?case by simp
+  show ?case
+  proof -
+    have "tamanho (cat [] L2) = tamanho L2" by simp
+    have "tamanho [] + tamanho L2 = tamanho L2" by simp
+    thus ?thesis by simp
+  qed
 next
   case (Cons h t)
-  then show ?case by simp
+  assume induction_hypothesis: "tamanho (cat t L2) = tamanho t + tamanho L2"
+  show ?case
+  proof -
+    have "tamanho (cat (h # t) L2) = 1 + tamanho (cat t L2)" by simp
+    also have "... = 1 + (tamanho t + tamanho L2)" using induction_hypothesis by simp
+    also have "... = tamanho (h # t) + tamanho L2" by simp
+    finally show ?thesis by simp
+  qed
 qed
 
-(* Theorem da prova 2 *)
+(* teorema da prova 2 *)
 theorem numnodos_equals_tamanho_de_conteudo: "numnodos A = tamanho (conteudo A)"
 proof (induct A)
   case Empty
-  then show ?case by simp
+  show ?case
+  proof -
+    have "numnodos Empty = 0" by simp
+    have "tamanho (conteudo Empty) = 0" by simp
+    thus ?thesis by simp
+  qed
 next
   case (Node L x R)
-  (* Induction hypotheses *)
-  assume IH_L: "numnodos L = tamanho (conteudo L)"
-  assume IH_R: "numnodos R = tamanho (conteudo R)"
+  assume induction_hypothesis_left: "numnodos L = tamanho (conteudo L)"
+  assume induction_hypothesis_right: "numnodos R = tamanho (conteudo R)"
   
-  have "numnodos (Node L x R) = 1 + numnodos L + numnodos R" by simp
-  moreover have "tamanho (conteudo (Node L x R)) = 1 + tamanho (cat (conteudo L) (conteudo R))" by simp
-  moreover have "tamanho (cat (conteudo L) (conteudo R)) = tamanho (conteudo L) + tamanho (conteudo R)"
-    by (simp add: cat_tamanho)
-  ultimately show ?case using IH_L IH_R by simp
+  show ?case
+  proof -
+    have "numnodos (Node L x R) = 1 + numnodos L + numnodos R" by simp
+    have "conteudo (Node L x R) = x # cat (conteudo L) (conteudo R)" by simp
+    have "tamanho (conteudo (Node L x R)) = 1 + tamanho (cat (conteudo L) (conteudo R))" by simp
+    have "tamanho (cat (conteudo L) (conteudo R)) = tamanho (conteudo L) + tamanho (conteudo R)" by (simp only: cat_tamanho)
+    have numnodos_tamanho: "numnodos (Node L x R) = 1 + tamanho (conteudo L) + tamanho (conteudo R)"
+      using induction_hypothesis_left induction_hypothesis_right by simp
+    thus ?thesis by (simp add: cat_tamanho)
+  qed
 qed
 
 end
