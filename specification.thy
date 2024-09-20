@@ -2,7 +2,7 @@ theory "specification"
   imports Main
 begin
 
-(* Definição de árvore *)
+(* Definição de árvore binária *)
 datatype 'a tree = Empty | Node "'a tree" 'a "'a tree"
 
 (* Definição da função cat *)
@@ -10,72 +10,72 @@ primrec cat :: "'a list ⇒ 'a list ⇒ 'a list" where
   "cat [] l = l" |
   "cat (h # t) l = h # (cat t l)"
 
-(* Definição da função tamanho *)
-primrec tamanho :: "'a list ⇒ nat" where
-  "tamanho [] = 0" |
-  "tamanho (h # t) = 1 + tamanho t"
+(* Definição da função size (tamanho) *)
+primrec size :: "'a list ⇒ nat" where
+  "size [] = 0" |
+  "size (h # t) = 1 + size t"
 
-(* Definição da função numnodos *)
-primrec numnodos :: "'a tree ⇒ nat" where
-  "numnodos Empty = 0" |
-  "numnodos (Node L x R) = 1 + numnodos L + numnodos R"
+(* Definição da função numnodes (numnodos) *)
+primrec numnodes :: "'a tree ⇒ nat" where
+  "numnodes Empty = 0" |
+  "numnodes (Node L x R) = 1 + numnodes L + numnodes R"
 
-(* Definição da função conteudo *)
-primrec conteudo :: "'a tree ⇒ 'a list" where
-  "conteudo Empty = []" |
-  "conteudo (Node L x R) = x # (cat (conteudo L) (conteudo R))"
+(* Definição da função content (conteudo) *)
+primrec content :: "'a tree ⇒ 'a list" where
+  "content Empty = []" |
+  "content (Node L x R) = x # (cat (content L) (content R))"
 
-(* Definição da função espelho *)
-primrec espelho :: "'a tree ⇒ 'a tree" where
-  "espelho Empty = Empty" |
-  "espelho (Node L x R) = Node (espelho R) x (espelho L)"
+(* Definição da função mirror (espelho) *)
+primrec mirror :: "'a tree ⇒ 'a tree" where
+  "mirror Empty = Empty" |
+  "mirror (Node L x R) = Node (mirror R) x (mirror L)"
 
-(* lemma da a prova 1 para ser reusado na prova 2 *)
-lemma cat_tamanho: "tamanho (cat L1 L2) = tamanho L1 + tamanho L2"
+(* lemma da prova 1 para ser reusado na prova 2 *)
+lemma cat_size: "size (cat L1 L2) = size L1 + size L2"
 proof (induct L1)
   case Nil
   show ?case
   proof -
-    have "tamanho (cat [] L2) = tamanho L2" by simp
-    have "tamanho [] + tamanho L2 = tamanho L2" by simp
+    have "size (cat [] L2) = size L2" by simp
+    have "size [] + size L2 = size L2" by simp
     thus ?thesis by simp
   qed
 next
   case (Cons h t)
-  assume induction_hypothesis: "tamanho (cat t L2) = tamanho t + tamanho L2"
+  assume induction_hypothesis: "size (cat t L2) = size t + size L2"
   show ?case
   proof -
-    have "tamanho (cat (h # t) L2) = 1 + tamanho (cat t L2)" by simp
-    also have "... = 1 + (tamanho t + tamanho L2)" using induction_hypothesis by simp
-    also have "... = tamanho (h # t) + tamanho L2" by simp
+    have "size (cat (h # t) L2) = 1 + size (cat t L2)" by simp
+    also have "... = 1 + (size t + size L2)" using induction_hypothesis by simp
+    also have "... = size (h # t) + size L2" by simp
     finally show ?thesis by simp
   qed
 qed
 
 (* teorema da prova 2 *)
-theorem numnodos_equals_tamanho_de_conteudo: "numnodos A = tamanho (conteudo A)"
+theorem numnodes_equals_size_of_content: "numnodes A = size (content A)"
 proof (induct A)
   case Empty
   show ?case
   proof -
-    have "numnodos Empty = 0" by simp
-    have "tamanho (conteudo Empty) = 0" by simp
+    have "numnodes Empty = 0" by simp
+    have "size (content Empty) = 0" by simp
     thus ?thesis by simp
   qed
 next
   case (Node L x R)
-  assume induction_hypothesis_left: "numnodos L = tamanho (conteudo L)"
-  assume induction_hypothesis_right: "numnodos R = tamanho (conteudo R)"
+  assume induction_hypothesis_left: "numnodes L = size (content L)"
+  assume induction_hypothesis_right: "numnodes R = size (content R)"
   
   show ?case
   proof -
-    have "numnodos (Node L x R) = 1 + numnodos L + numnodos R" by simp
-    have "conteudo (Node L x R) = x # cat (conteudo L) (conteudo R)" by simp
-    have "tamanho (conteudo (Node L x R)) = 1 + tamanho (cat (conteudo L) (conteudo R))" by simp
-    have "tamanho (cat (conteudo L) (conteudo R)) = tamanho (conteudo L) + tamanho (conteudo R)" by (simp only: cat_tamanho)
-    have numnodos_tamanho: "numnodos (Node L x R) = 1 + tamanho (conteudo L) + tamanho (conteudo R)"
+    have "numnodes (Node L x R) = 1 + numnodes L + numnodes R" by simp
+    have "content (Node L x R) = x # cat (content L) (content R)" by simp
+    have "size (content (Node L x R)) = 1 + size (cat (content L) (content R))" by simp
+    have "size (cat (content L) (content R)) = size (content L) + size (content R)" by (simp only: cat_size)
+    have numnodos_tamanho: "numnodes (Node L x R) = 1 + size (content L) + size (content R)"
       using induction_hypothesis_left induction_hypothesis_right by simp
-    thus ?thesis by (simp add: cat_tamanho)
+    thus ?thesis by (simp add: cat_size)
   qed
 qed
 
