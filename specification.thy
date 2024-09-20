@@ -1,4 +1,4 @@
-theory specification
+theory "specification"
   imports Main
 begin
 
