@@ -53,7 +53,7 @@ next
     have "size (h # (cat t L2)) = ..." by (simp only: size_induction)
     also have "... = 1 + (size t + size L2)" using induction_hypothesis by simp
     also have "... = size (h # t) + size L2" by simp
-    finally show ?thesis by simp
+    ultimately show ?thesis by simp
   qed
 qed
 
