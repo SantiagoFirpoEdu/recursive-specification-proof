@@ -37,10 +37,10 @@ proof (induct L1)
   show ?case
   proof -
     have "cat [] L2 = L2" by (simp only: cat_base)
-    also have "size (cat [] L2) = size L2" by simp
-    also have "size [] = 0" by (simp only: size_base)
-    also have "0 + size L2 = size L2" by simp
-    also have "size [] + size L2 = size L2" by simp
+    moreover have "size (cat [] L2) = size L2" by simp
+    moreover have "size [] = 0" by (simp only: size_base)
+    moreover have "0 + size L2 = size L2" by simp
+    moreover have "size [] + size L2 = size L2" by simp
     thus ?thesis by simp
   qed
 next
@@ -49,8 +49,8 @@ next
   show ?case
   proof -
     have "cat (h # t) L2 = h # (cat t L2)" by (simp only: cat_induction)
-    
-    have "size (cat (h # t) L2) = 1 + size (cat t L2)" by simp
+    have "size (cat (h # t) L2) =  1 + size (cat t L2)" by simp
+    have "size (h # (cat t L2)) = ..." by (simp only: size_induction)
     also have "... = 1 + (size t + size L2)" using induction_hypothesis by simp
     also have "... = size (h # t) + size L2" by simp
     finally show ?thesis by simp
@@ -64,21 +64,20 @@ proof (induct A)
   show ?case
   proof -
     have "numnodes Empty = 0" by (simp only: numnodes_base)
-    have "size (content Empty) = 0" by (simp only: size_base content_base)
+    moreover have "size (content Empty) = 0" by (simp only: size_base content_base)
     thus ?thesis by simp
   qed
 next
   case (Node L x R)
   assume induction_hypothesis_left: "numnodes L = size (content L)"
   assume induction_hypothesis_right: "numnodes R = size (content R)"
-  
   show ?case
   proof -
-    have "numnodes (Node L x R) = 1 + numnodes L + numnodes R" by (simp only: numnodes_induction)
     have "content (Node L x R) = x # cat (content L) (content R)" by (simp only: content_induction)
-    have "size (content (Node L x R)) = 1 + size (cat (content L) (content R))" by simp
-    have "size (cat (content L) (content R)) = size (content L) + size (content R)" by (simp only: cat_size)
-    have numnodos_tamanho: "numnodes (Node L x R) = 1 + size (content L) + size (content R)"
+    moreover have "size (content (Node L x R)) = 1 + size (cat (content L) (content R))" by simp
+    moreover have "size (cat (content L) (content R)) = size (content L) + size (content R)" by (simp only: cat_size)
+    moreover have "numnodes (Node L x R) = 1 + numnodes L + numnodes R" by (simp only: numnodes_induction)
+    moreover have "numnodes (Node L x R) = 1 + size (content L) + size (content R)"
       using induction_hypothesis_left induction_hypothesis_right by simp
     thus ?thesis by (simp add: cat_size)
   qed
