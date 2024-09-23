@@ -48,11 +48,12 @@ next
   assume induction_hypothesis: "size (cat t L2) = size t + size L2"
   show ?case
   proof -
-    have "cat (h # t) L2 = h # (cat t L2)" by (simp only: cat_induction)
-    have "size (cat (h # t) L2) =  1 + size (cat t L2)" by simp
-    have "size (h # (cat t L2)) = ..." by (simp only: size_induction)
-    also have "... = 1 + (size t + size L2)" using induction_hypothesis by simp
-    also have "... = size (h # t) + size L2" by simp
+    have "size (cat (h # t) L2) = size (h # (cat t L2))" by (simp only: cat_induction)
+    moreover have "size (cat (h # t) L2) =  1 + size (cat t L2)" by simp
+    moreover have "size (h # (cat t L2)) = ..." by (simp only: size_induction)
+    moreover have "... = 1 + (size t + size L2)"
+      using induction_hypothesis by simp
+    moreover have "... = size (h # t) + size L2" by simp
     ultimately show ?thesis by simp
   qed
 qed
