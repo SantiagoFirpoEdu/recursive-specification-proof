@@ -39,8 +39,8 @@ proof (induct L1)
     have 1: "cat [] L2 = L2" by (simp only: cat_base)
     also have 2: "size [] = 0" by (simp only: size_base)
     also have 3: "size (cat [] L2) = size L2" by (simp only: 1)
-    finally have conclusion: "size (cat [] L2) = size [] + size L2" by (simp only: 2 3)
-    thus ?thesis by (simp only: conclusion)
+    also have conclusion: "size (cat [] L2) = size [] + size L2" by (simp only: 2 3)
+    ultimately show ?thesis by (simp only: conclusion)
   qed
 next
   case (Cons h t)
@@ -66,8 +66,8 @@ proof (induct A)
     also have 2: "content Empty = []" by (simp only: content_base)
     also have 3: "size [] = 0" by (simp only: size_base)
     also have 4: "size (content Empty) = 0" by (simp only: 2 3)
-    finally have conclusion: "numnodes Empty = size (content Empty)" by (simp only: 1 4)
-    thus ?thesis by (simp only: conclusion)
+    also have conclusion: "numnodes Empty = size (content Empty)" by (simp only: 1 4)
+    ultimately show ?thesis by (simp only: conclusion)
   qed
 next
   case (Node L x R)
