@@ -83,7 +83,7 @@ next
     moreover have 5: "... = 1 + numnodes L + numnodes R" by (simp only: induction_hypothesis_left induction_hypothesis_right)
     also have 6: "size (x # cat (content L) (content R)) = ..." by (simp only: 4 5)
     finally have 7: "size (content (Node L x R)) = ..." by (simp only: 6 content_induction)
-    also have conclusion: "size (content (Node L x R)) = numnodes (Node L x R)" by (simp only: 7 numnodes_induction)
+    moreover have conclusion: "size (content (Node L x R)) = numnodes (Node L x R)" by (simp only: 7 numnodes_induction)
     ultimately show ?thesis by (simp only: conclusion)
   qed
 qed
