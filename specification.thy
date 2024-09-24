@@ -66,7 +66,7 @@ proof (induct A)
     also have 2: "content Empty = []" by (simp only: content_base)
     also have 3: "size [] = 0" by (simp only: size_base)
     also have 4: "size (content Empty) = 0" by (simp only: 2 3)
-    also have conclusion: "numnodes Empty = size (content Empty)" by (simp only: 1 3 4)
+    also have conclusion: "numnodes Empty = size (content Empty)" by (simp only: 1 4)
     thus ?thesis by (simp only: conclusion)
   qed
 next
