@@ -1,3 +1,4 @@
+(* Autores: Henrique Balejos Candaten, Lucas Alves Soares, Miguel Warken, Vitor Caús e Santiago Firpo*)
 theory "specification"
   imports Main
 begin
