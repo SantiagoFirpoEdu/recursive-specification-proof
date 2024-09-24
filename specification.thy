@@ -66,7 +66,7 @@ proof (induct A)
     also have 2: "content Empty = []" by (simp only: content_base)
     also have 3: "size [] = 0" by (simp only: size_base)
     also have 4: "size (content Empty) = 0" by (simp only: 2 3)
-    also have conclusion: "numnodes Empty = size (content Empty)" by (simp only: 1 4)
+    finally have conclusion: "numnodes Empty = size (content Empty)" by (simp only: 1 4)
     thus ?thesis by (simp only: conclusion)
   qed
 next
@@ -82,7 +82,7 @@ next
     moreover have 5: "size (x # cat (content L) (content R)) = ..." by (simp only: 3 4)
     moreover have 6: "size (content (Node L x R)) = ..." by (simp only: 5 content_induction)
     moreover have conclusion: "size (content (Node L x R)) = numnodes (Node L x R)" by (simp only: 6 numnodes_induction)
-    thus ?thesis by (simp only: conclusion)
+    ultimately show ?thesis by (simp only: conclusion)
   qed
 qed
 
