@@ -3,7 +3,7 @@ theory "specification"
   imports Main
 begin
 
-(* Definição de uma árvore binária *)
+(* Definição de uma árvore binária (ArvBin) *)
 datatype 'a binary_tree = Empty | Node "'a binary_tree" 'a "'a binary_tree"
 
 (* Definição da função cat *)
