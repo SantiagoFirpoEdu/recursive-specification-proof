@@ -77,11 +77,11 @@ next
   proof -
     have 1: "content (Node L x R) = x # cat (content L) (content R)" by (simp only: content_induction)
     also have 2: "size ... = 1 + size (cat (content L) (content R))" by (simp only: size_induction)
-    also have 3: "size (x # cat (content L) (content R)) = 1 + (size (content L) + size (content R))" by (simp only: size_induction cat_size)
-    moreover have 4: "... = 1 + numnodes L + numnodes R" by (simp only: induction_hypothesis_left induction_hypothesis_right)
-    moreover have 5: "size (x # cat (content L) (content R)) = ..." by (simp only: 3 4)
-    moreover have 6: "size (content (Node L x R)) = ..." by (simp only: 5 content_induction)
-    moreover have conclusion: "size (content (Node L x R)) = numnodes (Node L x R)" by (simp only: 6 numnodes_induction)
+    finally have 3: "size (x # cat (content L) (content R)) = 1 + (size (content L) + size (content R))" by (simp only: size_induction cat_size)
+    also have 4: "... = 1 + numnodes L + numnodes R" by (simp only: induction_hypothesis_left induction_hypothesis_right)
+    also have 5: "size (x # cat (content L) (content R)) = ..." by (simp only: 3 4)
+    also have 6: "size (content (Node L x R)) = ..." by (simp only: 5 content_induction)
+    have conclusion: "size (content (Node L x R)) = numnodes (Node L x R)" by (simp only: 6 numnodes_induction)
     ultimately show ?thesis by (simp only: conclusion)
   qed
 qed
