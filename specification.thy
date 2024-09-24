@@ -3,7 +3,7 @@ theory "specification"
 begin
 
 (* Definição de uma árvore binária *)
-datatype 'a tree = Empty | Node "'a tree" 'a "'a tree"
+datatype 'a binary_tree = Empty | Node "'a binary_tree" 'a "'a binary_tree"
 
 (* Definição da função cat *)
 primrec cat :: "'a list ⇒ 'a list ⇒ 'a list" where
@@ -16,17 +16,17 @@ primrec size :: "'a list ⇒ nat" where
   size_induction: "size (h # t) = 1 + size t"
 
 (* Definição da função numnodes (numnodos) *)
-primrec numnodes :: "'a tree ⇒ nat" where
+primrec numnodes :: "'a binary_tree ⇒ nat" where
   numnodes_base: "numnodes Empty = 0" |
   numnodes_induction: "numnodes (Node L x R) = 1 + numnodes L + numnodes R"
 
 (* Definição da função mirror (espelho) *)
-primrec mirror :: "'a tree ⇒ 'a tree" where
+primrec mirror :: "'a binary_tree ⇒ 'a binary_tree" where
   mirror_base: "mirror Empty = Empty" |
   mirror_induction: "mirror (Node L x R) = Node (mirror R) x (mirror L)"
 
 (* Definição da função content (conteudo) *)
-primrec content :: "'a tree ⇒ 'a list" where
+primrec content :: "'a binary_tree ⇒ 'a list" where
   content_base: "content Empty = []" |
   content_induction: "content (Node L x R) = x # (cat (content L) (content R))"
 
